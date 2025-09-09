@@ -1,23 +1,20 @@
-var jwt = require("jsonwebtoken");
+const jwt = require("jsonwebtoken");
 require("dotenv").config();
 
 const authenticate = (req, res, next) => {
   try {
-    let authHeader = req.headers.authorization;
+    const authHeader = req.headers.authorization;
     if (!authHeader) {
       return res.status(401).json({ error: "Authorization header missing" });
     }
-    // authHeader = authHeader.split(" ")
-    let token = authHeader.split(" ")[1];
-    if (!token) {
-      return res.status(404).json({ error: "Token missing" });
+
+    const parts = authHeader.split(" ");
+    if (parts.length !== 2 || parts[0] !== "Bearer") {
+      return res.status(401).json({ error: "Invalid authorization format" });
     }
 
+    const token = parts[1];
     const decoded = jwt.verify(token, process.env.JWT_SECRET_KEY);
-
-    if(!decoded){
-        return res.status(403).json({error: "Unauthorized user"});
-    }
 
     req.user = decoded;
     next();
@@ -34,6 +31,5 @@ const authenticate = (req, res, next) => {
       .json({ error: "Something went wrong, please try again later" });
   }
 };
-
 
 module.exports = authenticate;
