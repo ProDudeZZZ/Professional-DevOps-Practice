@@ -1,0 +1,616 @@
+<html><head><meta charset="utf-8"/><title>Integration Test Report</title><style type="text/css">:root {
+  --text-primary: #111;
+  --text-secondary: #4f4f4f;
+  --success: #006633;
+  --success-bright: #80ffbf;
+  --danger: #cc071e;
+  --danger-bright: #fbdfe0;
+  --warning: #995c00;
+  --warning-bright: #ffeea8;
+  --panel: #eee;
+  --border: #949494;
+  --disabled: #6b6b6b;
+}
+
+html,
+body {
+  font-family: Arial, Helvetica, sans-serif;
+  font-size: 16px;
+  margin: 0;
+  padding: 0;
+  color: var(--text-primary);
+}
+body {
+  padding: 2rem 1rem;
+}
+.jesthtml-content {
+  margin: 0 auto;
+  max-width: 70rem;
+}
+header {
+  display: flex;
+  align-items: center;
+}
+#title {
+  margin: 0;
+  flex-grow: 1;
+}
+#logo {
+  height: 4rem;
+}
+#timestamp {
+  color: var(--text-secondary);
+  margin-top: 0.5rem;
+}
+
+#metadata-container {
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+  margin-bottom: 2rem;
+}
+
+.additional-information-container {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  color: var(--text-secondary);
+}
+
+/** SUMMARY */
+#summary {
+  color: var(--text-primary);
+  display: flex;
+  font-family: monospace;
+  font-size: 1rem;
+}
+#summary > div {
+  margin-right: 0.5rem;
+  background: var(--panel);
+  padding: 1rem;
+  min-width: 15rem;
+}
+#summary > div:last-child {
+  margin-right: 0;
+}
+@media only screen and (max-width: 720px) {
+  #summary {
+    flex-direction: column;
+  }
+  #summary > div {
+    margin-right: 0;
+    margin-top: 1rem;
+  }
+  #summary > div:first-child {
+    margin-top: 0;
+  }
+}
+
+.summary-total {
+  font-weight: bold;
+  margin-bottom: 0.5rem;
+}
+.summary-passed {
+  color: var(--success);
+  border-left: 0.4rem solid var(--success);
+  padding-left: 0.5rem;
+  margin-bottom: 0.15rem;
+}
+.summary-failed,
+.summary-obsolete-snapshots {
+  color: var(--danger);
+  border-left: 0.4rem solid var(--danger);
+  padding-left: 0.5rem;
+  margin-bottom: 0.15rem;
+}
+.summary-pending {
+  color: var(--warning);
+  border-left: 0.4rem solid var(--warning);
+  padding-left: 0.5rem;
+  margin-bottom: 0.15rem;
+}
+.summary-empty {
+  color: var(--disabled);
+  border-left: 0.4rem solid var(--disabled);
+  margin-bottom: 0.15rem;
+}
+
+.test-result {
+  padding: 1rem;
+  margin-bottom: 0.25rem;
+}
+.test-result:last-child {
+  border: 0;
+}
+.test-result.passed {
+  background-color: var(--success-bright);
+  color: var(--success);
+}
+.test-result.failed {
+  background-color: var(--danger-bright);
+  color: var(--danger);
+}
+.test-result.pending {
+  background-color: var(--warning-bright);
+  color: var(--warning);
+}
+
+.test-info {
+  display: flex;
+  justify-content: space-between;
+}
+.test-suitename {
+  width: 20%;
+  text-align: left;
+  font-weight: bold;
+  word-break: break-word;
+}
+.test-title {
+  width: 40%;
+  text-align: left;
+  font-style: italic;
+}
+.test-status {
+  width: 20%;
+  text-align: right;
+}
+.test-duration {
+  width: 10%;
+  text-align: right;
+  font-size: 0.85rem;
+}
+
+.failureMessages {
+  padding: 0 1rem;
+  margin-top: 1rem;
+  border-top: 1px dashed var(--danger);
+}
+.failureMessages.suiteFailure {
+  border-top: none;
+}
+.failureMsg {
+  white-space: pre-wrap;
+  white-space: -moz-pre-wrap;
+  white-space: -pre-wrap;
+  white-space: -o-pre-wrap;
+  word-wrap: break-word;
+}
+
+.suite-container {
+  margin-bottom: 1rem;
+}
+.suite-info {
+  padding: 1rem;
+  background-color: var(--panel);
+  color: var(--text-secondary);
+  border: 0.15rem solid;
+  border-color: var(--panel);
+  display: flex;
+  align-items: center;
+  margin-bottom: 0.25rem;
+}
+.suite-info:hover {
+  border-color: var(--border);
+  cursor: pointer;
+}
+.suite-info .suite-path {
+  word-break: break-all;
+  flex-grow: 1;
+  font-family: monospace;
+  font-size: 1rem;
+}
+.suite-info .suite-time {
+  margin-left: 1rem;
+  padding: 0.2rem 0.3rem;
+  font-size: 0.85rem;
+}
+.suite-info .suite-time.warn {
+  background-color: var(--danger);
+  color: #fff;
+}
+.suite-info:before {
+  content: "\2303";
+  display: inline-block;
+  margin-right: 1rem;
+  transform: rotate(180deg) translateY(0.15rem);
+}
+.suite-container[open] .suite-info:before {
+  transform: rotate(0deg) translateY(0.15rem);
+}
+
+/* CONSOLE LOGS */
+.suite-consolelog {
+  margin-bottom: 0.25rem;
+  padding: 1rem;
+  background-color: var(--panel);
+}
+.suite-consolelog-header {
+  font-weight: bold;
+}
+.suite-consolelog-item {
+  padding: 0.5rem;
+}
+.suite-consolelog-item pre {
+  margin: 0.5rem 0;
+  white-space: pre-wrap;
+  white-space: -moz-pre-wrap;
+  white-space: -pre-wrap;
+  white-space: -o-pre-wrap;
+  word-wrap: break-word;
+}
+.suite-consolelog-item-origin {
+  color: var(--text-secondary);
+  font-weight: bold;
+}
+.suite-consolelog-item-message {
+  color: var(--text-primary);
+  font-size: 1rem;
+  padding: 0 0.5rem;
+}
+
+/* OBSOLETE SNAPSHOTS */
+.suite-obsolete-snapshots {
+  margin-bottom: 0.25rem;
+  padding: 1rem;
+  background-color: var(--danger-bright);
+  color: var(--danger);
+}
+.suite-obsolete-snapshots-header {
+  font-weight: bold;
+}
+.suite-obsolete-snapshots-item {
+  padding: 0.5rem;
+}
+.suite-obsolete-snapshots-item pre {
+  margin: 0.5rem 0;
+  white-space: pre-wrap;
+  white-space: -moz-pre-wrap;
+  white-space: -pre-wrap;
+  white-space: -o-pre-wrap;
+  word-wrap: break-word;
+}
+.suite-obsolete-snapshots-item-message {
+  color: var(--text-primary);
+  font-size: 1rem;
+  padding: 0 0.5rem;
+}
+</style></head><body><main class="jesthtml-content"><header><h1 id="title">Integration Test Report</h1></header><section id="metadata-container"><div id="timestamp">Started: 2025-09-09 20:08:18</div><div id="summary"><div id="suite-summary"><div class="summary-total">Suites (3)</div><div class="summary-passed ">3 passed</div><div class="summary-failed  summary-empty">0 failed</div><div class="summary-pending  summary-empty">0 pending</div></div><div id="test-summary"><div class="summary-total">Tests (11)</div><div class="summary-passed ">11 passed</div><div class="summary-failed  summary-empty">0 failed</div><div class="summary-pending  summary-empty">0 pending</div></div></div></section><details id="suite-1" class="suite-container" open=""><summary class="suite-info"><div class="suite-path">E:\Masai School\DevOps\Professional-DevOps-Practice\tests\app.test.js</div><div class="suite-time warn">34.335s</div></summary><div class="suite-tests"><div class="test-result passed"><div class="test-info"><div class="test-suitename"> </div><div class="test-title">First API Test</div><div class="test-status">passed</div><div class="test-duration">0.245s</div></div></div></div><div class="suite-consolelog"><div class="suite-consolelog-header">Console Log</div><div class="suite-consolelog-item"><pre class="suite-consolelog-item-origin">    at _log (E:\Masai School\DevOps\Professional-DevOps-Practice\node_modules\dotenv\lib\main.js:139:11)
+    at Object.configDotenv (E:\Masai School\DevOps\Professional-DevOps-Practice\node_modules\dotenv\lib\main.js:317:5)
+    at Object.config (E:\Masai School\DevOps\Professional-DevOps-Practice\node_modules\dotenv\lib\main.js:331:25)
+    at Object.config (E:\Masai School\DevOps\Professional-DevOps-Practice\index.js:1:19)
+    at Runtime._execModule (E:\Masai School\DevOps\Professional-DevOps-Practice\node_modules\jest-runtime\build\index.js:1268:24)
+    at Runtime._loadModule (E:\Masai School\DevOps\Professional-DevOps-Practice\node_modules\jest-runtime\build\index.js:944:12)
+    at Runtime.requireModule (E:\Masai School\DevOps\Professional-DevOps-Practice\node_modules\jest-runtime\build\index.js:832:12)
+    at Runtime.requireModuleOrMock (E:\Masai School\DevOps\Professional-DevOps-Practice\node_modules\jest-runtime\build\index.js:964:21)
+    at Object.require (E:\Masai School\DevOps\Professional-DevOps-Practice\tests\app.test.js:2:13)
+    at Runtime._execModule (E:\Masai School\DevOps\Professional-DevOps-Practice\node_modules\jest-runtime\build\index.js:1268:24)
+    at Runtime._loadModule (E:\Masai School\DevOps\Professional-DevOps-Practice\node_modules\jest-runtime\build\index.js:944:12)
+    at Runtime.requireModule (E:\Masai School\DevOps\Professional-DevOps-Practice\node_modules\jest-runtime\build\index.js:832:12)
+    at jestAdapter (E:\Masai School\DevOps\Professional-DevOps-Practice\node_modules\jest-circus\build\runner.js:95:13)
+    at processTicksAndRejections (node:internal/process/task_queues:105:5)
+    at runTestInternal (E:\Masai School\DevOps\Professional-DevOps-Practice\node_modules\jest-runner\build\testWorker.js:275:16)
+    at runTest (E:\Masai School\DevOps\Professional-DevOps-Practice\node_modules\jest-runner\build\testWorker.js:343:7)
+    at Object.worker (E:\Masai School\DevOps\Professional-DevOps-Practice\node_modules\jest-runner\build\testWorker.js:497:12)</pre><pre class="suite-consolelog-item-message">[dotenv@17.2.2] injecting env (3) from .env.testing -- tip: 📡 observe env with Radar: https://dotenvx.com/radar</pre></div><div class="suite-consolelog-item"><pre class="suite-consolelog-item-origin">    at _log (E:\Masai School\DevOps\Professional-DevOps-Practice\node_modules\dotenv\lib\main.js:139:11)
+    at Object.configDotenv (E:\Masai School\DevOps\Professional-DevOps-Practice\node_modules\dotenv\lib\main.js:317:5)
+    at Object.config (E:\Masai School\DevOps\Professional-DevOps-Practice\node_modules\dotenv\lib\main.js:331:25)
+    at Object.config (E:\Masai School\DevOps\Professional-DevOps-Practice\config\db.js:2:19)
+    at Runtime._execModule (E:\Masai School\DevOps\Professional-DevOps-Practice\node_modules\jest-runtime\build\index.js:1268:24)
+    at Runtime._loadModule (E:\Masai School\DevOps\Professional-DevOps-Practice\node_modules\jest-runtime\build\index.js:944:12)
+    at Runtime.requireModule (E:\Masai School\DevOps\Professional-DevOps-Practice\node_modules\jest-runtime\build\index.js:832:12)
+    at Runtime.requireModuleOrMock (E:\Masai School\DevOps\Professional-DevOps-Practice\node_modules\jest-runtime\build\index.js:964:21)
+    at Object.require (E:\Masai School\DevOps\Professional-DevOps-Practice\index.js:6:21)
+    at Runtime._execModule (E:\Masai School\DevOps\Professional-DevOps-Practice\node_modules\jest-runtime\build\index.js:1268:24)
+    at Runtime._loadModule (E:\Masai School\DevOps\Professional-DevOps-Practice\node_modules\jest-runtime\build\index.js:944:12)
+    at Runtime.requireModule (E:\Masai School\DevOps\Professional-DevOps-Practice\node_modules\jest-runtime\build\index.js:832:12)
+    at Runtime.requireModuleOrMock (E:\Masai School\DevOps\Professional-DevOps-Practice\node_modules\jest-runtime\build\index.js:964:21)
+    at Object.require (E:\Masai School\DevOps\Professional-DevOps-Practice\tests\app.test.js:2:13)
+    at Runtime._execModule (E:\Masai School\DevOps\Professional-DevOps-Practice\node_modules\jest-runtime\build\index.js:1268:24)
+    at Runtime._loadModule (E:\Masai School\DevOps\Professional-DevOps-Practice\node_modules\jest-runtime\build\index.js:944:12)
+    at Runtime.requireModule (E:\Masai School\DevOps\Professional-DevOps-Practice\node_modules\jest-runtime\build\index.js:832:12)
+    at jestAdapter (E:\Masai School\DevOps\Professional-DevOps-Practice\node_modules\jest-circus\build\runner.js:95:13)
+    at processTicksAndRejections (node:internal/process/task_queues:105:5)
+    at runTestInternal (E:\Masai School\DevOps\Professional-DevOps-Practice\node_modules\jest-runner\build\testWorker.js:275:16)
+    at runTest (E:\Masai School\DevOps\Professional-DevOps-Practice\node_modules\jest-runner\build\testWorker.js:343:7)
+    at Object.worker (E:\Masai School\DevOps\Professional-DevOps-Practice\node_modules\jest-runner\build\testWorker.js:497:12)</pre><pre class="suite-consolelog-item-message">[dotenv@17.2.2] injecting env (0) from .env -- tip: 📡 version env with Radar: https://dotenvx.com/radar</pre></div><div class="suite-consolelog-item"><pre class="suite-consolelog-item-origin">    at _log (E:\Masai School\DevOps\Professional-DevOps-Practice\node_modules\dotenv\lib\main.js:139:11)
+    at Object.configDotenv (E:\Masai School\DevOps\Professional-DevOps-Practice\node_modules\dotenv\lib\main.js:317:5)
+    at Object.config (E:\Masai School\DevOps\Professional-DevOps-Practice\node_modules\dotenv\lib\main.js:331:25)
+    at Object.config (E:\Masai School\DevOps\Professional-DevOps-Practice\routes\user.routes.js:5:19)
+    at Runtime._execModule (E:\Masai School\DevOps\Professional-DevOps-Practice\node_modules\jest-runtime\build\index.js:1268:24)
+    at Runtime._loadModule (E:\Masai School\DevOps\Professional-DevOps-Practice\node_modules\jest-runtime\build\index.js:944:12)
+    at Runtime.requireModule (E:\Masai School\DevOps\Professional-DevOps-Practice\node_modules\jest-runtime\build\index.js:832:12)
+    at Runtime.requireModuleOrMock (E:\Masai School\DevOps\Professional-DevOps-Practice\node_modules\jest-runtime\build\index.js:964:21)
+    at Object.require (E:\Masai School\DevOps\Professional-DevOps-Practice\index.js:7:20)
+    at Runtime._execModule (E:\Masai School\DevOps\Professional-DevOps-Practice\node_modules\jest-runtime\build\index.js:1268:24)
+    at Runtime._loadModule (E:\Masai School\DevOps\Professional-DevOps-Practice\node_modules\jest-runtime\build\index.js:944:12)
+    at Runtime.requireModule (E:\Masai School\DevOps\Professional-DevOps-Practice\node_modules\jest-runtime\build\index.js:832:12)
+    at Runtime.requireModuleOrMock (E:\Masai School\DevOps\Professional-DevOps-Practice\node_modules\jest-runtime\build\index.js:964:21)
+    at Object.require (E:\Masai School\DevOps\Professional-DevOps-Practice\tests\app.test.js:2:13)
+    at Runtime._execModule (E:\Masai School\DevOps\Professional-DevOps-Practice\node_modules\jest-runtime\build\index.js:1268:24)
+    at Runtime._loadModule (E:\Masai School\DevOps\Professional-DevOps-Practice\node_modules\jest-runtime\build\index.js:944:12)
+    at Runtime.requireModule (E:\Masai School\DevOps\Professional-DevOps-Practice\node_modules\jest-runtime\build\index.js:832:12)
+    at jestAdapter (E:\Masai School\DevOps\Professional-DevOps-Practice\node_modules\jest-circus\build\runner.js:95:13)
+    at processTicksAndRejections (node:internal/process/task_queues:105:5)
+    at runTestInternal (E:\Masai School\DevOps\Professional-DevOps-Practice\node_modules\jest-runner\build\testWorker.js:275:16)
+    at runTest (E:\Masai School\DevOps\Professional-DevOps-Practice\node_modules\jest-runner\build\testWorker.js:343:7)
+    at Object.worker (E:\Masai School\DevOps\Professional-DevOps-Practice\node_modules\jest-runner\build\testWorker.js:497:12)</pre><pre class="suite-consolelog-item-message">[dotenv@17.2.2] injecting env (0) from .env -- tip: ⚙️  write to custom object with { processEnv: myObject }</pre></div><div class="suite-consolelog-item"><pre class="suite-consolelog-item-origin">    at _log (E:\Masai School\DevOps\Professional-DevOps-Practice\node_modules\dotenv\lib\main.js:139:11)
+    at Object.configDotenv (E:\Masai School\DevOps\Professional-DevOps-Practice\node_modules\dotenv\lib\main.js:317:5)
+    at Object.config (E:\Masai School\DevOps\Professional-DevOps-Practice\node_modules\dotenv\lib\main.js:331:25)
+    at Object.config (E:\Masai School\DevOps\Professional-DevOps-Practice\middleware\auth.middleware.js:2:19)
+    at Runtime._execModule (E:\Masai School\DevOps\Professional-DevOps-Practice\node_modules\jest-runtime\build\index.js:1268:24)
+    at Runtime._loadModule (E:\Masai School\DevOps\Professional-DevOps-Practice\node_modules\jest-runtime\build\index.js:944:12)
+    at Runtime.requireModule (E:\Masai School\DevOps\Professional-DevOps-Practice\node_modules\jest-runtime\build\index.js:832:12)
+    at Runtime.requireModuleOrMock (E:\Masai School\DevOps\Professional-DevOps-Practice\node_modules\jest-runtime\build\index.js:964:21)
+    at Object.require (E:\Masai School\DevOps\Professional-DevOps-Practice\routes\todo.routes.js:2:22)
+    at Runtime._execModule (E:\Masai School\DevOps\Professional-DevOps-Practice\node_modules\jest-runtime\build\index.js:1268:24)
+    at Runtime._loadModule (E:\Masai School\DevOps\Professional-DevOps-Practice\node_modules\jest-runtime\build\index.js:944:12)
+    at Runtime.requireModule (E:\Masai School\DevOps\Professional-DevOps-Practice\node_modules\jest-runtime\build\index.js:832:12)
+    at Runtime.requireModuleOrMock (E:\Masai School\DevOps\Professional-DevOps-Practice\node_modules\jest-runtime\build\index.js:964:21)
+    at Object.require (E:\Masai School\DevOps\Professional-DevOps-Practice\index.js:8:20)
+    at Runtime._execModule (E:\Masai School\DevOps\Professional-DevOps-Practice\node_modules\jest-runtime\build\index.js:1268:24)
+    at Runtime._loadModule (E:\Masai School\DevOps\Professional-DevOps-Practice\node_modules\jest-runtime\build\index.js:944:12)
+    at Runtime.requireModule (E:\Masai School\DevOps\Professional-DevOps-Practice\node_modules\jest-runtime\build\index.js:832:12)
+    at Runtime.requireModuleOrMock (E:\Masai School\DevOps\Professional-DevOps-Practice\node_modules\jest-runtime\build\index.js:964:21)
+    at Object.require (E:\Masai School\DevOps\Professional-DevOps-Practice\tests\app.test.js:2:13)
+    at Runtime._execModule (E:\Masai School\DevOps\Professional-DevOps-Practice\node_modules\jest-runtime\build\index.js:1268:24)
+    at Runtime._loadModule (E:\Masai School\DevOps\Professional-DevOps-Practice\node_modules\jest-runtime\build\index.js:944:12)
+    at Runtime.requireModule (E:\Masai School\DevOps\Professional-DevOps-Practice\node_modules\jest-runtime\build\index.js:832:12)
+    at jestAdapter (E:\Masai School\DevOps\Professional-DevOps-Practice\node_modules\jest-circus\build\runner.js:95:13)
+    at processTicksAndRejections (node:internal/process/task_queues:105:5)
+    at runTestInternal (E:\Masai School\DevOps\Professional-DevOps-Practice\node_modules\jest-runner\build\testWorker.js:275:16)
+    at runTest (E:\Masai School\DevOps\Professional-DevOps-Practice\node_modules\jest-runner\build\testWorker.js:343:7)
+    at Object.worker (E:\Masai School\DevOps\Professional-DevOps-Practice\node_modules\jest-runner\build\testWorker.js:497:12)</pre><pre class="suite-consolelog-item-message">[dotenv@17.2.2] injecting env (0) from .env -- tip: 📡 observe env with Radar: https://dotenvx.com/radar</pre></div><div class="suite-consolelog-item"><pre class="suite-consolelog-item-origin">    at _log (E:\Masai School\DevOps\Professional-DevOps-Practice\node_modules\dotenv\lib\main.js:139:11)
+    at Object.configDotenv (E:\Masai School\DevOps\Professional-DevOps-Practice\node_modules\dotenv\lib\main.js:317:5)
+    at Object.config (E:\Masai School\DevOps\Professional-DevOps-Practice\node_modules\dotenv\lib\main.js:331:25)
+    at Object.config (E:\Masai School\DevOps\Professional-DevOps-Practice\index.js:9:19)
+    at Runtime._execModule (E:\Masai School\DevOps\Professional-DevOps-Practice\node_modules\jest-runtime\build\index.js:1268:24)
+    at Runtime._loadModule (E:\Masai School\DevOps\Professional-DevOps-Practice\node_modules\jest-runtime\build\index.js:944:12)
+    at Runtime.requireModule (E:\Masai School\DevOps\Professional-DevOps-Practice\node_modules\jest-runtime\build\index.js:832:12)
+    at Runtime.requireModuleOrMock (E:\Masai School\DevOps\Professional-DevOps-Practice\node_modules\jest-runtime\build\index.js:964:21)
+    at Object.require (E:\Masai School\DevOps\Professional-DevOps-Practice\tests\app.test.js:2:13)
+    at Runtime._execModule (E:\Masai School\DevOps\Professional-DevOps-Practice\node_modules\jest-runtime\build\index.js:1268:24)
+    at Runtime._loadModule (E:\Masai School\DevOps\Professional-DevOps-Practice\node_modules\jest-runtime\build\index.js:944:12)
+    at Runtime.requireModule (E:\Masai School\DevOps\Professional-DevOps-Practice\node_modules\jest-runtime\build\index.js:832:12)
+    at jestAdapter (E:\Masai School\DevOps\Professional-DevOps-Practice\node_modules\jest-circus\build\runner.js:95:13)
+    at processTicksAndRejections (node:internal/process/task_queues:105:5)
+    at runTestInternal (E:\Masai School\DevOps\Professional-DevOps-Practice\node_modules\jest-runner\build\testWorker.js:275:16)
+    at runTest (E:\Masai School\DevOps\Professional-DevOps-Practice\node_modules\jest-runner\build\testWorker.js:343:7)
+    at Object.worker (E:\Masai School\DevOps\Professional-DevOps-Practice\node_modules\jest-runner\build\testWorker.js:497:12)</pre><pre class="suite-consolelog-item-message">[dotenv@17.2.2] injecting env (0) from .env -- tip: 🔐 prevent building .env in docker: https://dotenvx.com/prebuild</pre></div><div class="suite-consolelog-item"><pre class="suite-consolelog-item-origin">    at Object.log (E:\Masai School\DevOps\Professional-DevOps-Practice\tests\setup.js:5:13)
+    at processTicksAndRejections (node:internal/process/task_queues:105:5)</pre><pre class="suite-consolelog-item-message">mongodb://127.0.0.1:27017/testingDatabase</pre></div><div class="suite-consolelog-item"><pre class="suite-consolelog-item-origin">    at Object.log (E:\Masai School\DevOps\Professional-DevOps-Practice\tests\setup.js:6:13)
+    at processTicksAndRejections (node:internal/process/task_queues:105:5)</pre><pre class="suite-consolelog-item-message">Connected To DB In Jest Config</pre></div><div class="suite-consolelog-item"><pre class="suite-consolelog-item-origin">    at log (E:\Masai School\DevOps\Professional-DevOps-Practice\config\db.js:7:17)
+    at processTicksAndRejections (node:internal/process/task_queues:105:5)</pre><pre class="suite-consolelog-item-message">Successfully connected to DB</pre></div><div class="suite-consolelog-item"><pre class="suite-consolelog-item-origin">    at Object.log (E:\Masai School\DevOps\Professional-DevOps-Practice\tests\setup.js:13:11)</pre><pre class="suite-consolelog-item-message">DB Deleted and connection closed</pre></div></div></details><details id="suite-2" class="suite-container" open=""><summary class="suite-info"><div class="suite-path">E:\Masai School\DevOps\Professional-DevOps-Practice\tests\auth.test.js</div><div class="suite-time warn">36.228s</div></summary><div class="suite-tests"><div class="test-result passed"><div class="test-info"><div class="test-suitename">Auth Integration Tests</div><div class="test-title">✅ should signup a new user</div><div class="test-status">passed</div><div class="test-duration">1.21s</div></div></div><div class="test-result passed"><div class="test-info"><div class="test-suitename">Auth Integration Tests</div><div class="test-title">✅ should login and return JWT</div><div class="test-status">passed</div><div class="test-duration">0.366s</div></div></div><div class="test-result passed"><div class="test-info"><div class="test-suitename">Auth Integration Tests</div><div class="test-title">❌ should fail login with wrong password</div><div class="test-status">passed</div><div class="test-duration">0.344s</div></div></div><div class="test-result passed"><div class="test-info"><div class="test-suitename">Auth Integration Tests</div><div class="test-title">❌ should reject request without token</div><div class="test-status">passed</div><div class="test-duration">0.014s</div></div></div><div class="test-result passed"><div class="test-info"><div class="test-suitename">Auth Integration Tests</div><div class="test-title">❌ should reject request with invalid token</div><div class="test-status">passed</div><div class="test-duration">0.02s</div></div></div></div><div class="suite-consolelog"><div class="suite-consolelog-header">Console Log</div><div class="suite-consolelog-item"><pre class="suite-consolelog-item-origin">    at _log (E:\Masai School\DevOps\Professional-DevOps-Practice\node_modules\dotenv\lib\main.js:139:11)
+    at Object.configDotenv (E:\Masai School\DevOps\Professional-DevOps-Practice\node_modules\dotenv\lib\main.js:317:5)
+    at Object.config (E:\Masai School\DevOps\Professional-DevOps-Practice\node_modules\dotenv\lib\main.js:331:25)
+    at Object.config (E:\Masai School\DevOps\Professional-DevOps-Practice\index.js:1:19)
+    at Runtime._execModule (E:\Masai School\DevOps\Professional-DevOps-Practice\node_modules\jest-runtime\build\index.js:1268:24)
+    at Runtime._loadModule (E:\Masai School\DevOps\Professional-DevOps-Practice\node_modules\jest-runtime\build\index.js:944:12)
+    at Runtime.requireModule (E:\Masai School\DevOps\Professional-DevOps-Practice\node_modules\jest-runtime\build\index.js:832:12)
+    at Runtime.requireModuleOrMock (E:\Masai School\DevOps\Professional-DevOps-Practice\node_modules\jest-runtime\build\index.js:964:21)
+    at Object.require (E:\Masai School\DevOps\Professional-DevOps-Practice\tests\auth.test.js:2:13)
+    at Runtime._execModule (E:\Masai School\DevOps\Professional-DevOps-Practice\node_modules\jest-runtime\build\index.js:1268:24)
+    at Runtime._loadModule (E:\Masai School\DevOps\Professional-DevOps-Practice\node_modules\jest-runtime\build\index.js:944:12)
+    at Runtime.requireModule (E:\Masai School\DevOps\Professional-DevOps-Practice\node_modules\jest-runtime\build\index.js:832:12)
+    at jestAdapter (E:\Masai School\DevOps\Professional-DevOps-Practice\node_modules\jest-circus\build\runner.js:95:13)
+    at processTicksAndRejections (node:internal/process/task_queues:105:5)
+    at runTestInternal (E:\Masai School\DevOps\Professional-DevOps-Practice\node_modules\jest-runner\build\testWorker.js:275:16)
+    at runTest (E:\Masai School\DevOps\Professional-DevOps-Practice\node_modules\jest-runner\build\testWorker.js:343:7)
+    at Object.worker (E:\Masai School\DevOps\Professional-DevOps-Practice\node_modules\jest-runner\build\testWorker.js:497:12)</pre><pre class="suite-consolelog-item-message">[dotenv@17.2.2] injecting env (3) from .env.testing -- tip: ⚙️  enable debug logging with { debug: true }</pre></div><div class="suite-consolelog-item"><pre class="suite-consolelog-item-origin">    at _log (E:\Masai School\DevOps\Professional-DevOps-Practice\node_modules\dotenv\lib\main.js:139:11)
+    at Object.configDotenv (E:\Masai School\DevOps\Professional-DevOps-Practice\node_modules\dotenv\lib\main.js:317:5)
+    at Object.config (E:\Masai School\DevOps\Professional-DevOps-Practice\node_modules\dotenv\lib\main.js:331:25)
+    at Object.config (E:\Masai School\DevOps\Professional-DevOps-Practice\config\db.js:2:19)
+    at Runtime._execModule (E:\Masai School\DevOps\Professional-DevOps-Practice\node_modules\jest-runtime\build\index.js:1268:24)
+    at Runtime._loadModule (E:\Masai School\DevOps\Professional-DevOps-Practice\node_modules\jest-runtime\build\index.js:944:12)
+    at Runtime.requireModule (E:\Masai School\DevOps\Professional-DevOps-Practice\node_modules\jest-runtime\build\index.js:832:12)
+    at Runtime.requireModuleOrMock (E:\Masai School\DevOps\Professional-DevOps-Practice\node_modules\jest-runtime\build\index.js:964:21)
+    at Object.require (E:\Masai School\DevOps\Professional-DevOps-Practice\index.js:6:21)
+    at Runtime._execModule (E:\Masai School\DevOps\Professional-DevOps-Practice\node_modules\jest-runtime\build\index.js:1268:24)
+    at Runtime._loadModule (E:\Masai School\DevOps\Professional-DevOps-Practice\node_modules\jest-runtime\build\index.js:944:12)
+    at Runtime.requireModule (E:\Masai School\DevOps\Professional-DevOps-Practice\node_modules\jest-runtime\build\index.js:832:12)
+    at Runtime.requireModuleOrMock (E:\Masai School\DevOps\Professional-DevOps-Practice\node_modules\jest-runtime\build\index.js:964:21)
+    at Object.require (E:\Masai School\DevOps\Professional-DevOps-Practice\tests\auth.test.js:2:13)
+    at Runtime._execModule (E:\Masai School\DevOps\Professional-DevOps-Practice\node_modules\jest-runtime\build\index.js:1268:24)
+    at Runtime._loadModule (E:\Masai School\DevOps\Professional-DevOps-Practice\node_modules\jest-runtime\build\index.js:944:12)
+    at Runtime.requireModule (E:\Masai School\DevOps\Professional-DevOps-Practice\node_modules\jest-runtime\build\index.js:832:12)
+    at jestAdapter (E:\Masai School\DevOps\Professional-DevOps-Practice\node_modules\jest-circus\build\runner.js:95:13)
+    at processTicksAndRejections (node:internal/process/task_queues:105:5)
+    at runTestInternal (E:\Masai School\DevOps\Professional-DevOps-Practice\node_modules\jest-runner\build\testWorker.js:275:16)
+    at runTest (E:\Masai School\DevOps\Professional-DevOps-Practice\node_modules\jest-runner\build\testWorker.js:343:7)
+    at Object.worker (E:\Masai School\DevOps\Professional-DevOps-Practice\node_modules\jest-runner\build\testWorker.js:497:12)</pre><pre class="suite-consolelog-item-message">[dotenv@17.2.2] injecting env (0) from .env -- tip: 📡 observe env with Radar: https://dotenvx.com/radar</pre></div><div class="suite-consolelog-item"><pre class="suite-consolelog-item-origin">    at _log (E:\Masai School\DevOps\Professional-DevOps-Practice\node_modules\dotenv\lib\main.js:139:11)
+    at Object.configDotenv (E:\Masai School\DevOps\Professional-DevOps-Practice\node_modules\dotenv\lib\main.js:317:5)
+    at Object.config (E:\Masai School\DevOps\Professional-DevOps-Practice\node_modules\dotenv\lib\main.js:331:25)
+    at Object.config (E:\Masai School\DevOps\Professional-DevOps-Practice\routes\user.routes.js:5:19)
+    at Runtime._execModule (E:\Masai School\DevOps\Professional-DevOps-Practice\node_modules\jest-runtime\build\index.js:1268:24)
+    at Runtime._loadModule (E:\Masai School\DevOps\Professional-DevOps-Practice\node_modules\jest-runtime\build\index.js:944:12)
+    at Runtime.requireModule (E:\Masai School\DevOps\Professional-DevOps-Practice\node_modules\jest-runtime\build\index.js:832:12)
+    at Runtime.requireModuleOrMock (E:\Masai School\DevOps\Professional-DevOps-Practice\node_modules\jest-runtime\build\index.js:964:21)
+    at Object.require (E:\Masai School\DevOps\Professional-DevOps-Practice\index.js:7:20)
+    at Runtime._execModule (E:\Masai School\DevOps\Professional-DevOps-Practice\node_modules\jest-runtime\build\index.js:1268:24)
+    at Runtime._loadModule (E:\Masai School\DevOps\Professional-DevOps-Practice\node_modules\jest-runtime\build\index.js:944:12)
+    at Runtime.requireModule (E:\Masai School\DevOps\Professional-DevOps-Practice\node_modules\jest-runtime\build\index.js:832:12)
+    at Runtime.requireModuleOrMock (E:\Masai School\DevOps\Professional-DevOps-Practice\node_modules\jest-runtime\build\index.js:964:21)
+    at Object.require (E:\Masai School\DevOps\Professional-DevOps-Practice\tests\auth.test.js:2:13)
+    at Runtime._execModule (E:\Masai School\DevOps\Professional-DevOps-Practice\node_modules\jest-runtime\build\index.js:1268:24)
+    at Runtime._loadModule (E:\Masai School\DevOps\Professional-DevOps-Practice\node_modules\jest-runtime\build\index.js:944:12)
+    at Runtime.requireModule (E:\Masai School\DevOps\Professional-DevOps-Practice\node_modules\jest-runtime\build\index.js:832:12)
+    at jestAdapter (E:\Masai School\DevOps\Professional-DevOps-Practice\node_modules\jest-circus\build\runner.js:95:13)
+    at processTicksAndRejections (node:internal/process/task_queues:105:5)
+    at runTestInternal (E:\Masai School\DevOps\Professional-DevOps-Practice\node_modules\jest-runner\build\testWorker.js:275:16)
+    at runTest (E:\Masai School\DevOps\Professional-DevOps-Practice\node_modules\jest-runner\build\testWorker.js:343:7)
+    at Object.worker (E:\Masai School\DevOps\Professional-DevOps-Practice\node_modules\jest-runner\build\testWorker.js:497:12)</pre><pre class="suite-consolelog-item-message">[dotenv@17.2.2] injecting env (0) from .env -- tip: 📡 auto-backup env with Radar: https://dotenvx.com/radar</pre></div><div class="suite-consolelog-item"><pre class="suite-consolelog-item-origin">    at _log (E:\Masai School\DevOps\Professional-DevOps-Practice\node_modules\dotenv\lib\main.js:139:11)
+    at Object.configDotenv (E:\Masai School\DevOps\Professional-DevOps-Practice\node_modules\dotenv\lib\main.js:317:5)
+    at Object.config (E:\Masai School\DevOps\Professional-DevOps-Practice\node_modules\dotenv\lib\main.js:331:25)
+    at Object.config (E:\Masai School\DevOps\Professional-DevOps-Practice\middleware\auth.middleware.js:2:19)
+    at Runtime._execModule (E:\Masai School\DevOps\Professional-DevOps-Practice\node_modules\jest-runtime\build\index.js:1268:24)
+    at Runtime._loadModule (E:\Masai School\DevOps\Professional-DevOps-Practice\node_modules\jest-runtime\build\index.js:944:12)
+    at Runtime.requireModule (E:\Masai School\DevOps\Professional-DevOps-Practice\node_modules\jest-runtime\build\index.js:832:12)
+    at Runtime.requireModuleOrMock (E:\Masai School\DevOps\Professional-DevOps-Practice\node_modules\jest-runtime\build\index.js:964:21)
+    at Object.require (E:\Masai School\DevOps\Professional-DevOps-Practice\routes\todo.routes.js:2:22)
+    at Runtime._execModule (E:\Masai School\DevOps\Professional-DevOps-Practice\node_modules\jest-runtime\build\index.js:1268:24)
+    at Runtime._loadModule (E:\Masai School\DevOps\Professional-DevOps-Practice\node_modules\jest-runtime\build\index.js:944:12)
+    at Runtime.requireModule (E:\Masai School\DevOps\Professional-DevOps-Practice\node_modules\jest-runtime\build\index.js:832:12)
+    at Runtime.requireModuleOrMock (E:\Masai School\DevOps\Professional-DevOps-Practice\node_modules\jest-runtime\build\index.js:964:21)
+    at Object.require (E:\Masai School\DevOps\Professional-DevOps-Practice\index.js:8:20)
+    at Runtime._execModule (E:\Masai School\DevOps\Professional-DevOps-Practice\node_modules\jest-runtime\build\index.js:1268:24)
+    at Runtime._loadModule (E:\Masai School\DevOps\Professional-DevOps-Practice\node_modules\jest-runtime\build\index.js:944:12)
+    at Runtime.requireModule (E:\Masai School\DevOps\Professional-DevOps-Practice\node_modules\jest-runtime\build\index.js:832:12)
+    at Runtime.requireModuleOrMock (E:\Masai School\DevOps\Professional-DevOps-Practice\node_modules\jest-runtime\build\index.js:964:21)
+    at Object.require (E:\Masai School\DevOps\Professional-DevOps-Practice\tests\auth.test.js:2:13)
+    at Runtime._execModule (E:\Masai School\DevOps\Professional-DevOps-Practice\node_modules\jest-runtime\build\index.js:1268:24)
+    at Runtime._loadModule (E:\Masai School\DevOps\Professional-DevOps-Practice\node_modules\jest-runtime\build\index.js:944:12)
+    at Runtime.requireModule (E:\Masai School\DevOps\Professional-DevOps-Practice\node_modules\jest-runtime\build\index.js:832:12)
+    at jestAdapter (E:\Masai School\DevOps\Professional-DevOps-Practice\node_modules\jest-circus\build\runner.js:95:13)
+    at processTicksAndRejections (node:internal/process/task_queues:105:5)
+    at runTestInternal (E:\Masai School\DevOps\Professional-DevOps-Practice\node_modules\jest-runner\build\testWorker.js:275:16)
+    at runTest (E:\Masai School\DevOps\Professional-DevOps-Practice\node_modules\jest-runner\build\testWorker.js:343:7)
+    at Object.worker (E:\Masai School\DevOps\Professional-DevOps-Practice\node_modules\jest-runner\build\testWorker.js:497:12)</pre><pre class="suite-consolelog-item-message">[dotenv@17.2.2] injecting env (0) from .env -- tip: ⚙️  override existing env vars with { override: true }</pre></div><div class="suite-consolelog-item"><pre class="suite-consolelog-item-origin">    at _log (E:\Masai School\DevOps\Professional-DevOps-Practice\node_modules\dotenv\lib\main.js:139:11)
+    at Object.configDotenv (E:\Masai School\DevOps\Professional-DevOps-Practice\node_modules\dotenv\lib\main.js:317:5)
+    at Object.config (E:\Masai School\DevOps\Professional-DevOps-Practice\node_modules\dotenv\lib\main.js:331:25)
+    at Object.config (E:\Masai School\DevOps\Professional-DevOps-Practice\index.js:9:19)
+    at Runtime._execModule (E:\Masai School\DevOps\Professional-DevOps-Practice\node_modules\jest-runtime\build\index.js:1268:24)
+    at Runtime._loadModule (E:\Masai School\DevOps\Professional-DevOps-Practice\node_modules\jest-runtime\build\index.js:944:12)
+    at Runtime.requireModule (E:\Masai School\DevOps\Professional-DevOps-Practice\node_modules\jest-runtime\build\index.js:832:12)
+    at Runtime.requireModuleOrMock (E:\Masai School\DevOps\Professional-DevOps-Practice\node_modules\jest-runtime\build\index.js:964:21)
+    at Object.require (E:\Masai School\DevOps\Professional-DevOps-Practice\tests\auth.test.js:2:13)
+    at Runtime._execModule (E:\Masai School\DevOps\Professional-DevOps-Practice\node_modules\jest-runtime\build\index.js:1268:24)
+    at Runtime._loadModule (E:\Masai School\DevOps\Professional-DevOps-Practice\node_modules\jest-runtime\build\index.js:944:12)
+    at Runtime.requireModule (E:\Masai School\DevOps\Professional-DevOps-Practice\node_modules\jest-runtime\build\index.js:832:12)
+    at jestAdapter (E:\Masai School\DevOps\Professional-DevOps-Practice\node_modules\jest-circus\build\runner.js:95:13)
+    at processTicksAndRejections (node:internal/process/task_queues:105:5)
+    at runTestInternal (E:\Masai School\DevOps\Professional-DevOps-Practice\node_modules\jest-runner\build\testWorker.js:275:16)
+    at runTest (E:\Masai School\DevOps\Professional-DevOps-Practice\node_modules\jest-runner\build\testWorker.js:343:7)
+    at Object.worker (E:\Masai School\DevOps\Professional-DevOps-Practice\node_modules\jest-runner\build\testWorker.js:497:12)</pre><pre class="suite-consolelog-item-message">[dotenv@17.2.2] injecting env (0) from .env -- tip: ⚙️  write to custom object with { processEnv: myObject }</pre></div><div class="suite-consolelog-item"><pre class="suite-consolelog-item-origin">    at Object.log (E:\Masai School\DevOps\Professional-DevOps-Practice\tests\setup.js:5:13)
+    at processTicksAndRejections (node:internal/process/task_queues:105:5)</pre><pre class="suite-consolelog-item-message">mongodb://127.0.0.1:27017/testingDatabase</pre></div><div class="suite-consolelog-item"><pre class="suite-consolelog-item-origin">    at Object.log (E:\Masai School\DevOps\Professional-DevOps-Practice\tests\setup.js:6:13)
+    at processTicksAndRejections (node:internal/process/task_queues:105:5)</pre><pre class="suite-consolelog-item-message">Connected To DB In Jest Config</pre></div><div class="suite-consolelog-item"><pre class="suite-consolelog-item-origin">    at log (E:\Masai School\DevOps\Professional-DevOps-Practice\config\db.js:7:17)
+    at processTicksAndRejections (node:internal/process/task_queues:105:5)</pre><pre class="suite-consolelog-item-message">Successfully connected to DB</pre></div><div class="suite-consolelog-item"><pre class="suite-consolelog-item-origin">    at log (E:\Masai School\DevOps\Professional-DevOps-Practice\middleware\auth.middleware.js:25:13)
+    at Layer.handleRequest (E:\Masai School\DevOps\Professional-DevOps-Practice\node_modules\router\lib\layer.js:152:17)
+    at next (E:\Masai School\DevOps\Professional-DevOps-Practice\node_modules\router\lib\route.js:157:13)
+    at Route.dispatch (E:\Masai School\DevOps\Professional-DevOps-Practice\node_modules\router\lib\route.js:117:3)
+    at handle (E:\Masai School\DevOps\Professional-DevOps-Practice\node_modules\router\index.js:435:11)
+    at Layer.handleRequest (E:\Masai School\DevOps\Professional-DevOps-Practice\node_modules\router\lib\layer.js:152:17)
+    at E:\Masai School\DevOps\Professional-DevOps-Practice\node_modules\router\index.js:295:15
+    at processParams (E:\Masai School\DevOps\Professional-DevOps-Practice\node_modules\router\index.js:582:12)
+    at next (E:\Masai School\DevOps\Professional-DevOps-Practice\node_modules\router\index.js:291:5)
+    at router.handle (E:\Masai School\DevOps\Professional-DevOps-Practice\node_modules\router\index.js:186:3)
+    at router (E:\Masai School\DevOps\Professional-DevOps-Practice\node_modules\router\index.js:60:12)
+    at Layer.handleRequest (E:\Masai School\DevOps\Professional-DevOps-Practice\node_modules\router\lib\layer.js:152:17)
+    at trimPrefix (E:\Masai School\DevOps\Professional-DevOps-Practice\node_modules\router\index.js:342:13)
+    at E:\Masai School\DevOps\Professional-DevOps-Practice\node_modules\router\index.js:297:9
+    at processParams (E:\Masai School\DevOps\Professional-DevOps-Practice\node_modules\router\index.js:582:12)
+    at next (E:\Masai School\DevOps\Professional-DevOps-Practice\node_modules\router\index.js:291:5)
+    at jsonParser (E:\Masai School\DevOps\Professional-DevOps-Practice\node_modules\body-parser\lib\types\json.js:100:7)
+    at Layer.handleRequest (E:\Masai School\DevOps\Professional-DevOps-Practice\node_modules\router\lib\layer.js:152:17)
+    at trimPrefix (E:\Masai School\DevOps\Professional-DevOps-Practice\node_modules\router\index.js:342:13)
+    at E:\Masai School\DevOps\Professional-DevOps-Practice\node_modules\router\index.js:297:9
+    at processParams (E:\Masai School\DevOps\Professional-DevOps-Practice\node_modules\router\index.js:582:12)
+    at next (E:\Masai School\DevOps\Professional-DevOps-Practice\node_modules\router\index.js:291:5)
+    at router.handle (E:\Masai School\DevOps\Professional-DevOps-Practice\node_modules\router\index.js:186:3)
+    at app.handle (E:\Masai School\DevOps\Professional-DevOps-Practice\node_modules\express\lib\application.js:177:15)
+    at Server.app (E:\Masai School\DevOps\Professional-DevOps-Practice\node_modules\express\lib\express.js:38:9)
+    at Server.emit (node:events:507:28)
+    at parserOnIncoming (node:_http_server:1153:12)
+    at HTTPParser.parserOnHeadersComplete (node:_http_common:117:17)</pre><pre class="suite-consolelog-item-message">JsonWebTokenError {
+  name: 'JsonWebTokenError',
+  message: 'jwt malformed'
+}</pre></div><div class="suite-consolelog-item"><pre class="suite-consolelog-item-origin">    at Object.log (E:\Masai School\DevOps\Professional-DevOps-Practice\tests\setup.js:13:11)</pre><pre class="suite-consolelog-item-message">DB Deleted and connection closed</pre></div></div></details><details id="suite-3" class="suite-container" open=""><summary class="suite-info"><div class="suite-path">E:\Masai School\DevOps\Professional-DevOps-Practice\tests\todos.test.js</div><div class="suite-time warn">38.412s</div></summary><div class="suite-tests"><div class="test-result passed"><div class="test-info"><div class="test-suitename">Todos Integration Tests</div><div class="test-title">✅ should create a todo with valid token</div><div class="test-status">passed</div><div class="test-duration">1.604s</div></div></div><div class="test-result passed"><div class="test-info"><div class="test-suitename">Todos Integration Tests</div><div class="test-title">❌ should fail to create todo without token</div><div class="test-status">passed</div><div class="test-duration">0.671s</div></div></div><div class="test-result passed"><div class="test-info"><div class="test-suitename">Todos Integration Tests</div><div class="test-title">✅ should fetch only user’s todos</div><div class="test-status">passed</div><div class="test-duration">0.717s</div></div></div><div class="test-result passed"><div class="test-info"><div class="test-suitename">Todos Integration Tests</div><div class="test-title">✅ should update todo if owner</div><div class="test-status">passed</div><div class="test-duration">0.676s</div></div></div><div class="test-result passed"><div class="test-info"><div class="test-suitename">Todos Integration Tests</div><div class="test-title">✅ should delete todo if owner</div><div class="test-status">passed</div><div class="test-duration">0.637s</div></div></div></div><div class="suite-consolelog"><div class="suite-consolelog-header">Console Log</div><div class="suite-consolelog-item"><pre class="suite-consolelog-item-origin">    at _log (E:\Masai School\DevOps\Professional-DevOps-Practice\node_modules\dotenv\lib\main.js:139:11)
+    at Object.configDotenv (E:\Masai School\DevOps\Professional-DevOps-Practice\node_modules\dotenv\lib\main.js:317:5)
+    at Object.config (E:\Masai School\DevOps\Professional-DevOps-Practice\node_modules\dotenv\lib\main.js:331:25)
+    at Object.config (E:\Masai School\DevOps\Professional-DevOps-Practice\index.js:1:19)
+    at Runtime._execModule (E:\Masai School\DevOps\Professional-DevOps-Practice\node_modules\jest-runtime\build\index.js:1268:24)
+    at Runtime._loadModule (E:\Masai School\DevOps\Professional-DevOps-Practice\node_modules\jest-runtime\build\index.js:944:12)
+    at Runtime.requireModule (E:\Masai School\DevOps\Professional-DevOps-Practice\node_modules\jest-runtime\build\index.js:832:12)
+    at Runtime.requireModuleOrMock (E:\Masai School\DevOps\Professional-DevOps-Practice\node_modules\jest-runtime\build\index.js:964:21)
+    at Object.require (E:\Masai School\DevOps\Professional-DevOps-Practice\tests\todos.test.js:2:13)
+    at Runtime._execModule (E:\Masai School\DevOps\Professional-DevOps-Practice\node_modules\jest-runtime\build\index.js:1268:24)
+    at Runtime._loadModule (E:\Masai School\DevOps\Professional-DevOps-Practice\node_modules\jest-runtime\build\index.js:944:12)
+    at Runtime.requireModule (E:\Masai School\DevOps\Professional-DevOps-Practice\node_modules\jest-runtime\build\index.js:832:12)
+    at jestAdapter (E:\Masai School\DevOps\Professional-DevOps-Practice\node_modules\jest-circus\build\runner.js:95:13)
+    at processTicksAndRejections (node:internal/process/task_queues:105:5)
+    at runTestInternal (E:\Masai School\DevOps\Professional-DevOps-Practice\node_modules\jest-runner\build\testWorker.js:275:16)
+    at runTest (E:\Masai School\DevOps\Professional-DevOps-Practice\node_modules\jest-runner\build\testWorker.js:343:7)
+    at Object.worker (E:\Masai School\DevOps\Professional-DevOps-Practice\node_modules\jest-runner\build\testWorker.js:497:12)</pre><pre class="suite-consolelog-item-message">[dotenv@17.2.2] injecting env (3) from .env.testing -- tip: 📡 auto-backup env with Radar: https://dotenvx.com/radar</pre></div><div class="suite-consolelog-item"><pre class="suite-consolelog-item-origin">    at _log (E:\Masai School\DevOps\Professional-DevOps-Practice\node_modules\dotenv\lib\main.js:139:11)
+    at Object.configDotenv (E:\Masai School\DevOps\Professional-DevOps-Practice\node_modules\dotenv\lib\main.js:317:5)
+    at Object.config (E:\Masai School\DevOps\Professional-DevOps-Practice\node_modules\dotenv\lib\main.js:331:25)
+    at Object.config (E:\Masai School\DevOps\Professional-DevOps-Practice\config\db.js:2:19)
+    at Runtime._execModule (E:\Masai School\DevOps\Professional-DevOps-Practice\node_modules\jest-runtime\build\index.js:1268:24)
+    at Runtime._loadModule (E:\Masai School\DevOps\Professional-DevOps-Practice\node_modules\jest-runtime\build\index.js:944:12)
+    at Runtime.requireModule (E:\Masai School\DevOps\Professional-DevOps-Practice\node_modules\jest-runtime\build\index.js:832:12)
+    at Runtime.requireModuleOrMock (E:\Masai School\DevOps\Professional-DevOps-Practice\node_modules\jest-runtime\build\index.js:964:21)
+    at Object.require (E:\Masai School\DevOps\Professional-DevOps-Practice\index.js:6:21)
+    at Runtime._execModule (E:\Masai School\DevOps\Professional-DevOps-Practice\node_modules\jest-runtime\build\index.js:1268:24)
+    at Runtime._loadModule (E:\Masai School\DevOps\Professional-DevOps-Practice\node_modules\jest-runtime\build\index.js:944:12)
+    at Runtime.requireModule (E:\Masai School\DevOps\Professional-DevOps-Practice\node_modules\jest-runtime\build\index.js:832:12)
+    at Runtime.requireModuleOrMock (E:\Masai School\DevOps\Professional-DevOps-Practice\node_modules\jest-runtime\build\index.js:964:21)
+    at Object.require (E:\Masai School\DevOps\Professional-DevOps-Practice\tests\todos.test.js:2:13)
+    at Runtime._execModule (E:\Masai School\DevOps\Professional-DevOps-Practice\node_modules\jest-runtime\build\index.js:1268:24)
+    at Runtime._loadModule (E:\Masai School\DevOps\Professional-DevOps-Practice\node_modules\jest-runtime\build\index.js:944:12)
+    at Runtime.requireModule (E:\Masai School\DevOps\Professional-DevOps-Practice\node_modules\jest-runtime\build\index.js:832:12)
+    at jestAdapter (E:\Masai School\DevOps\Professional-DevOps-Practice\node_modules\jest-circus\build\runner.js:95:13)
+    at processTicksAndRejections (node:internal/process/task_queues:105:5)
+    at runTestInternal (E:\Masai School\DevOps\Professional-DevOps-Practice\node_modules\jest-runner\build\testWorker.js:275:16)
+    at runTest (E:\Masai School\DevOps\Professional-DevOps-Practice\node_modules\jest-runner\build\testWorker.js:343:7)
+    at Object.worker (E:\Masai School\DevOps\Professional-DevOps-Practice\node_modules\jest-runner\build\testWorker.js:497:12)</pre><pre class="suite-consolelog-item-message">[dotenv@17.2.2] injecting env (0) from .env -- tip: ⚙️  suppress all logs with { quiet: true }</pre></div><div class="suite-consolelog-item"><pre class="suite-consolelog-item-origin">    at _log (E:\Masai School\DevOps\Professional-DevOps-Practice\node_modules\dotenv\lib\main.js:139:11)
+    at Object.configDotenv (E:\Masai School\DevOps\Professional-DevOps-Practice\node_modules\dotenv\lib\main.js:317:5)
+    at Object.config (E:\Masai School\DevOps\Professional-DevOps-Practice\node_modules\dotenv\lib\main.js:331:25)
+    at Object.config (E:\Masai School\DevOps\Professional-DevOps-Practice\routes\user.routes.js:5:19)
+    at Runtime._execModule (E:\Masai School\DevOps\Professional-DevOps-Practice\node_modules\jest-runtime\build\index.js:1268:24)
+    at Runtime._loadModule (E:\Masai School\DevOps\Professional-DevOps-Practice\node_modules\jest-runtime\build\index.js:944:12)
+    at Runtime.requireModule (E:\Masai School\DevOps\Professional-DevOps-Practice\node_modules\jest-runtime\build\index.js:832:12)
+    at Runtime.requireModuleOrMock (E:\Masai School\DevOps\Professional-DevOps-Practice\node_modules\jest-runtime\build\index.js:964:21)
+    at Object.require (E:\Masai School\DevOps\Professional-DevOps-Practice\index.js:7:20)
+    at Runtime._execModule (E:\Masai School\DevOps\Professional-DevOps-Practice\node_modules\jest-runtime\build\index.js:1268:24)
+    at Runtime._loadModule (E:\Masai School\DevOps\Professional-DevOps-Practice\node_modules\jest-runtime\build\index.js:944:12)
+    at Runtime.requireModule (E:\Masai School\DevOps\Professional-DevOps-Practice\node_modules\jest-runtime\build\index.js:832:12)
+    at Runtime.requireModuleOrMock (E:\Masai School\DevOps\Professional-DevOps-Practice\node_modules\jest-runtime\build\index.js:964:21)
+    at Object.require (E:\Masai School\DevOps\Professional-DevOps-Practice\tests\todos.test.js:2:13)
+    at Runtime._execModule (E:\Masai School\DevOps\Professional-DevOps-Practice\node_modules\jest-runtime\build\index.js:1268:24)
+    at Runtime._loadModule (E:\Masai School\DevOps\Professional-DevOps-Practice\node_modules\jest-runtime\build\index.js:944:12)
+    at Runtime.requireModule (E:\Masai School\DevOps\Professional-DevOps-Practice\node_modules\jest-runtime\build\index.js:832:12)
+    at jestAdapter (E:\Masai School\DevOps\Professional-DevOps-Practice\node_modules\jest-circus\build\runner.js:95:13)
+    at processTicksAndRejections (node:internal/process/task_queues:105:5)
+    at runTestInternal (E:\Masai School\DevOps\Professional-DevOps-Practice\node_modules\jest-runner\build\testWorker.js:275:16)
+    at runTest (E:\Masai School\DevOps\Professional-DevOps-Practice\node_modules\jest-runner\build\testWorker.js:343:7)
+    at Object.worker (E:\Masai School\DevOps\Professional-DevOps-Practice\node_modules\jest-runner\build\testWorker.js:497:12)</pre><pre class="suite-consolelog-item-message">[dotenv@17.2.2] injecting env (0) from .env -- tip: ⚙️  write to custom object with { processEnv: myObject }</pre></div><div class="suite-consolelog-item"><pre class="suite-consolelog-item-origin">    at _log (E:\Masai School\DevOps\Professional-DevOps-Practice\node_modules\dotenv\lib\main.js:139:11)
+    at Object.configDotenv (E:\Masai School\DevOps\Professional-DevOps-Practice\node_modules\dotenv\lib\main.js:317:5)
+    at Object.config (E:\Masai School\DevOps\Professional-DevOps-Practice\node_modules\dotenv\lib\main.js:331:25)
+    at Object.config (E:\Masai School\DevOps\Professional-DevOps-Practice\middleware\auth.middleware.js:2:19)
+    at Runtime._execModule (E:\Masai School\DevOps\Professional-DevOps-Practice\node_modules\jest-runtime\build\index.js:1268:24)
+    at Runtime._loadModule (E:\Masai School\DevOps\Professional-DevOps-Practice\node_modules\jest-runtime\build\index.js:944:12)
+    at Runtime.requireModule (E:\Masai School\DevOps\Professional-DevOps-Practice\node_modules\jest-runtime\build\index.js:832:12)
+    at Runtime.requireModuleOrMock (E:\Masai School\DevOps\Professional-DevOps-Practice\node_modules\jest-runtime\build\index.js:964:21)
+    at Object.require (E:\Masai School\DevOps\Professional-DevOps-Practice\routes\todo.routes.js:2:22)
+    at Runtime._execModule (E:\Masai School\DevOps\Professional-DevOps-Practice\node_modules\jest-runtime\build\index.js:1268:24)
+    at Runtime._loadModule (E:\Masai School\DevOps\Professional-DevOps-Practice\node_modules\jest-runtime\build\index.js:944:12)
+    at Runtime.requireModule (E:\Masai School\DevOps\Professional-DevOps-Practice\node_modules\jest-runtime\build\index.js:832:12)
+    at Runtime.requireModuleOrMock (E:\Masai School\DevOps\Professional-DevOps-Practice\node_modules\jest-runtime\build\index.js:964:21)
+    at Object.require (E:\Masai School\DevOps\Professional-DevOps-Practice\index.js:8:20)
+    at Runtime._execModule (E:\Masai School\DevOps\Professional-DevOps-Practice\node_modules\jest-runtime\build\index.js:1268:24)
+    at Runtime._loadModule (E:\Masai School\DevOps\Professional-DevOps-Practice\node_modules\jest-runtime\build\index.js:944:12)
+    at Runtime.requireModule (E:\Masai School\DevOps\Professional-DevOps-Practice\node_modules\jest-runtime\build\index.js:832:12)
+    at Runtime.requireModuleOrMock (E:\Masai School\DevOps\Professional-DevOps-Practice\node_modules\jest-runtime\build\index.js:964:21)
+    at Object.require (E:\Masai School\DevOps\Professional-DevOps-Practice\tests\todos.test.js:2:13)
+    at Runtime._execModule (E:\Masai School\DevOps\Professional-DevOps-Practice\node_modules\jest-runtime\build\index.js:1268:24)
+    at Runtime._loadModule (E:\Masai School\DevOps\Professional-DevOps-Practice\node_modules\jest-runtime\build\index.js:944:12)
+    at Runtime.requireModule (E:\Masai School\DevOps\Professional-DevOps-Practice\node_modules\jest-runtime\build\index.js:832:12)
+    at jestAdapter (E:\Masai School\DevOps\Professional-DevOps-Practice\node_modules\jest-circus\build\runner.js:95:13)
+    at processTicksAndRejections (node:internal/process/task_queues:105:5)
+    at runTestInternal (E:\Masai School\DevOps\Professional-DevOps-Practice\node_modules\jest-runner\build\testWorker.js:275:16)
+    at runTest (E:\Masai School\DevOps\Professional-DevOps-Practice\node_modules\jest-runner\build\testWorker.js:343:7)
+    at Object.worker (E:\Masai School\DevOps\Professional-DevOps-Practice\node_modules\jest-runner\build\testWorker.js:497:12)</pre><pre class="suite-consolelog-item-message">[dotenv@17.2.2] injecting env (0) from .env -- tip: 🔐 encrypt with Dotenvx: https://dotenvx.com</pre></div><div class="suite-consolelog-item"><pre class="suite-consolelog-item-origin">    at _log (E:\Masai School\DevOps\Professional-DevOps-Practice\node_modules\dotenv\lib\main.js:139:11)
+    at Object.configDotenv (E:\Masai School\DevOps\Professional-DevOps-Practice\node_modules\dotenv\lib\main.js:317:5)
+    at Object.config (E:\Masai School\DevOps\Professional-DevOps-Practice\node_modules\dotenv\lib\main.js:331:25)
+    at Object.config (E:\Masai School\DevOps\Professional-DevOps-Practice\index.js:9:19)
+    at Runtime._execModule (E:\Masai School\DevOps\Professional-DevOps-Practice\node_modules\jest-runtime\build\index.js:1268:24)
+    at Runtime._loadModule (E:\Masai School\DevOps\Professional-DevOps-Practice\node_modules\jest-runtime\build\index.js:944:12)
+    at Runtime.requireModule (E:\Masai School\DevOps\Professional-DevOps-Practice\node_modules\jest-runtime\build\index.js:832:12)
+    at Runtime.requireModuleOrMock (E:\Masai School\DevOps\Professional-DevOps-Practice\node_modules\jest-runtime\build\index.js:964:21)
+    at Object.require (E:\Masai School\DevOps\Professional-DevOps-Practice\tests\todos.test.js:2:13)
+    at Runtime._execModule (E:\Masai School\DevOps\Professional-DevOps-Practice\node_modules\jest-runtime\build\index.js:1268:24)
+    at Runtime._loadModule (E:\Masai School\DevOps\Professional-DevOps-Practice\node_modules\jest-runtime\build\index.js:944:12)
+    at Runtime.requireModule (E:\Masai School\DevOps\Professional-DevOps-Practice\node_modules\jest-runtime\build\index.js:832:12)
+    at jestAdapter (E:\Masai School\DevOps\Professional-DevOps-Practice\node_modules\jest-circus\build\runner.js:95:13)
+    at processTicksAndRejections (node:internal/process/task_queues:105:5)
+    at runTestInternal (E:\Masai School\DevOps\Professional-DevOps-Practice\node_modules\jest-runner\build\testWorker.js:275:16)
+    at runTest (E:\Masai School\DevOps\Professional-DevOps-Practice\node_modules\jest-runner\build\testWorker.js:343:7)
+    at Object.worker (E:\Masai School\DevOps\Professional-DevOps-Practice\node_modules\jest-runner\build\testWorker.js:497:12)</pre><pre class="suite-consolelog-item-message">[dotenv@17.2.2] injecting env (0) from .env -- tip: ⚙️  suppress all logs with { quiet: true }</pre></div><div class="suite-consolelog-item"><pre class="suite-consolelog-item-origin">    at Object.log (E:\Masai School\DevOps\Professional-DevOps-Practice\tests\setup.js:5:13)
+    at processTicksAndRejections (node:internal/process/task_queues:105:5)</pre><pre class="suite-consolelog-item-message">mongodb://127.0.0.1:27017/testingDatabase</pre></div><div class="suite-consolelog-item"><pre class="suite-consolelog-item-origin">    at Object.log (E:\Masai School\DevOps\Professional-DevOps-Practice\tests\setup.js:6:13)
+    at processTicksAndRejections (node:internal/process/task_queues:105:5)</pre><pre class="suite-consolelog-item-message">Connected To DB In Jest Config</pre></div><div class="suite-consolelog-item"><pre class="suite-consolelog-item-origin">    at log (E:\Masai School\DevOps\Professional-DevOps-Practice\config\db.js:7:17)
+    at processTicksAndRejections (node:internal/process/task_queues:105:5)</pre><pre class="suite-consolelog-item-message">Successfully connected to DB</pre></div><div class="suite-consolelog-item"><pre class="suite-consolelog-item-origin">    at Object.log (E:\Masai School\DevOps\Professional-DevOps-Practice\tests\setup.js:13:11)</pre><pre class="suite-consolelog-item-message">DB Deleted and connection closed</pre></div></div></details></main></body></html>
