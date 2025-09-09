@@ -11,7 +11,6 @@ require("dotenv").config();
 const app = express();
 
 // console.log(process.env.MONGO_URI);
-const PORT = process.env.PORT || 5000;
 
 app.use(express.json());
 connectToDB();
@@ -26,9 +25,5 @@ app.use("/todos", todoRouter);
 app.use((req, res) => {
   res.status(404).json({ msg: "page not found" });
 });
-
-// app.listen(PORT, (req, res) => {
-//     console.log(`Server is running on port http://localhost:${PORT}`);
-// })
 
 module.exports = app;
