@@ -14,7 +14,7 @@ describe("Auth Integration Tests", () => {
   it("✅ should login and return JWT", async () => {
     await request(app)
       .post("/auth/signup")
-      .send({ email: "test@gmail.com", password: "123456" });
+      .send({name: "test", email: "test@gmail.com", password: "123456" });
 
     const res = await request(app).post("/auth/login").send({
       email: "test@gmail.com",
@@ -28,7 +28,7 @@ describe("Auth Integration Tests", () => {
   it("❌ should fail login with wrong password", async () => {
     await request(app)
       .post("/auth/signup")
-      .send({ email: "test@test.com", password: "123456" });
+      .send({ name: "test2", email: "test@gmail.com", password: "123456" });
 
     const res = await request(app).post("/auth/login").send({
       email: "test@gmail.com",

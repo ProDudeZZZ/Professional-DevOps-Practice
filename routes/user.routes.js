@@ -12,11 +12,6 @@ router.post('/signup', async(req, res) => {
     try {
         let { name, email, password } = req.body;
 
-        let isExist = await UserModel.findOne({email});
-        if(isExist){
-            return res.status(400).json({error: "Email already exist, please login"})
-        }
-
         if (!name || !email || !password) {
           return res
             .status(400)
